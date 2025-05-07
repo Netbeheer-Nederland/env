@@ -30,10 +30,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Antora and its dependencies
-RUN npm i -g antora@3.1.10
+RUN mkdir /project
+COPY package.json /project/
+COPY package-lock.json /project/
+WORKDIR /project
 
-USER $USER_ID
+# Install Antora and its dependencies
+RUN npm i
 
 # Install shell completions for just
 RUN just --completions bash >> $HOME/.bash_completion \

@@ -12,10 +12,12 @@ docker run \
     -it \
     --user "$USER_ID:$GROUP_ID" \
     -v .:/project \
-    -v "$HOME:$HOME" \
-    -v "$SCRIPT_DIR/entrypoint.sh":/entrypoint.sh \
+    -v "$HOME/.ssh:$HOME/.ssh" \
+    -v "$SCRIPT_DIR/entrypoint.sh":/usr/local/bin/entrypoint.sh \
     -e GIT_USER_EMAIL="$GIT_USER_EMAIL" \
     -e GIT_USER_NAME="$GIT_USER_NAME" \
-    --entrypoint /entrypoint.sh \
+    --entrypoint /usr/local/bin/entrypoint.sh \
+    -w /project \
+    -p 8080:8080 \
     bartkl/nbnl-env \
     /bin/bash
