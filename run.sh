@@ -12,6 +12,7 @@ docker run \
     -it \
     --user "$USER_ID:$GROUP_ID" \
     -v .:/project \
+    -v "$HOME:$HOME" \
     -v "$SCRIPT_DIR/entrypoint.sh":/entrypoint.sh \
     -e GIT_USER_EMAIL="$GIT_USER_EMAIL" \
     -e GIT_USER_NAME="$GIT_USER_NAME" \
