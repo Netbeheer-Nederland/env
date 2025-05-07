@@ -4,6 +4,9 @@ Netbeheer Nederland environment for information modeling and generating document
 
 ## Usage
 
+> [!warning]
+> All ways of running the container assume the container being run from a Bash shell. Linux and macOS installations typically have Bash installed, but Windows does not. Windows users are advised to use WSL to make sure their environment works with these instructions as well.
+
 ### Using `run.sh`
 
 ```sh
