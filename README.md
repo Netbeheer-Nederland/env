@@ -7,22 +7,26 @@ Netbeheer Nederland environment for information modeling and generating document
 > [!warning]
 > All ways of running the container assume the container being run from a Bash shell. Linux and macOS installations typically have Bash installed, but Windows does not. Windows users are advised to use WSL to make sure their environment works with these instructions as well.
 
-### Using `run.sh`
+### Running
+
+Use the `run.sh` script to instantiate a container. It runs the container for you while taking care of:
+
+* mounting the current working directory in the container in the `/project` directory
+* mapping the host user to the target container environment (UID, GID and name)
+* setting the Git user name and e-mail as globally (in the `--global` sense) configured in the host environment
+
+Running the script is as simple as:
 
 ```sh
 $ ./run.sh
 ```
 
-### Using `docker`
+## Developing
+
+### Building
+
+Simply run the `build.sh` script:
 
 ```sh
-$ docker run -it --user "$(id -u):$(id -g)" -v ".:/project" nbnl-env /bin/bash
-```
-
-### Using `docker compose`
-
-Make sure `compose.yml` is present in the working directory.
-
-```sh
-$ USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose run nbnl-env
+$ ./build.sh
 ```

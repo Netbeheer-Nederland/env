@@ -1,6 +1,7 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm
 
-# Default values for user and group
+ARG GIT_USER_NAME
+ARG GIT_USER_EMAIL
 ARG USER_ID=1000
 ARG USER_NAME=dev-user
 ARG GROUP_ID=1000
@@ -16,11 +17,13 @@ RUN groupadd -g $GROUP_ID $USER_NAME && \
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gnupg ca-certificates \
     curl \
-    git
+    git \
+    nano \
+    vim
 
 # Install Python project dependencies
-COPY pyproject.toml ./
-RUN uv pip install -r pyproject.toml --system
+COPY requirements.txt /tmp
+RUN uv pip install -r /tmp/requirements.txt --system
 
 # Install Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
@@ -29,3 +32,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 
 # Install Antora and its dependencies
 RUN npm i -g antora@3.1.10
+
+USER $USER_ID
+
+# Install shell completions for just
+RUN just --completions bash >> $HOME/.bash_completion \
+    && echo "source $HOME/.bash_completion" >> $HOME/.bashrc
