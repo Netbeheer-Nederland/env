@@ -31,7 +31,7 @@ All you need to do to get started is copy the `run.sh` script somewhere you like
 For example:
 
 ```sh
-$ wget https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.2.1/run.sh -O ~/.local/bin/run-nbnl-env
+$ wget https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.3.1/run.sh -O ~/.local/bin/run-nbnl-env
 --2025-05-08 15:23:35--  https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.1.0/run.sh
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 2606:50c0:8001::154, 2606:50c0:8003::154, 2606:50c0:8002::154, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|2606:50c0:8001::154|:443... connected.
