@@ -1,7 +1,5 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm
 
-#EXPOSE 8080
-
 ARG GIT_USER_NAME
 ARG GIT_USER_EMAIL
 ARG USER_ID=1000
@@ -36,9 +34,6 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Antora and its dependencies
-#RUN npm i -g corepack
-
-#RUN yarn global add --ignore-optional --silent \
 RUN npm i -g \
     http-serve@1.0.1 \
     @antora/cli@3.1.9 \
