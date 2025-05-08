@@ -64,7 +64,7 @@ $ run-nbnl-env
 
 Running the script without any arguments will assume the current working directory is the project directory, which it mounts under `/project`.
 
-If a directory path is passed as an argument, it is used as the project directory instead:
+If a directory path is passed as an argument, it is used as the project directory instead. **Caution**: the provided path must be absolute. For example:
 
 ```sh
 $ run-nbnl-env ~/projects/my-data-product
