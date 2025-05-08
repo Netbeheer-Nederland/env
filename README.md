@@ -11,7 +11,7 @@ Netbeheer Nederland environment for information modeling and generating document
 
 Use the `run.sh` script to instantiate a container. It runs the container for you while taking care of:
 
-* mounting the current working directory in the container in the `/project` directory
+* mounting the project working directory in the container in the `/project` directory
 * mount the host user's SSH key directory in the container
 * mapping the host user to the target container environment (UID, GID and name)
 * setting the Git user name and e-mail as globally (in the `--global` sense) configured in the host environment
@@ -20,6 +20,14 @@ Running the script is as simple as:
 
 ```sh
 $ ./run.sh
+```
+
+This will assume the current working directory is the project directory, which it mounts to `/project`.
+
+If a different directory than the working directory should serve as the project directory, pass it as an argument:
+
+```sh
+$ ./run.sh ~/projects/my-data-product
 ```
 
 ## Developing
