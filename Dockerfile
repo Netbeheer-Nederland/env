@@ -46,3 +46,7 @@ RUN npm i -g \
 # Install shell completions for just
 RUN just --completions bash >> /usr/share/bash-completion/completions/just \
     && echo "source /usr/share/bash-completion/completions/just" >> /etc/bash.bashrc
+
+# Prepare entrypoint
+COPY --chmod=777 entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
