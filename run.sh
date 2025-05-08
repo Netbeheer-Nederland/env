@@ -1,6 +1,7 @@
 #!/bin/env bash
 
-LOCAL_PROJECT_DIR="${1:-.}"
+LOCAL_PROJECT_DIR="${1:-$PWD}"
+PROJECT_DIR=/project/$(basename "$LOCAL_PROJECT_DIR")
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 USER_NAME="$USER"
@@ -30,11 +31,11 @@ fi
 docker run \
     -it \
     --user "$USER_ID:$GROUP_ID" \
-    -v "$LOCAL_PROJECT_DIR":/project \
+    -v "$LOCAL_PROJECT_DIR":"$PROJECT_DIR" \
     -v "$HOME/.ssh:$HOME/.ssh" \
     -e GIT_USER_EMAIL="$GIT_USER_EMAIL" \
     -e GIT_USER_NAME="$GIT_USER_NAME" \
-    -w /project \
+    -w "$PROJECT_DIR" \
     -p 8080:8080 \
     bartkl/nbnl-env:latest \
     /bin/bash

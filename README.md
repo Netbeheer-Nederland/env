@@ -31,7 +31,7 @@ All you need to do to get started is copy the `run.sh` script somewhere you like
 For example:
 
 ```sh
-$ wget https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.1.0/run.sh -O ~/.local/bin/run-nbnl-env
+$ wget https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.2.1/run.sh -O ~/.local/bin/run-nbnl-env
 --2025-05-08 15:23:35--  https://raw.githubusercontent.com/Netbeheer-Nederland/env/refs/tags/v1.1.0/run.sh
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 2606:50c0:8001::154, 2606:50c0:8003::154, 2606:50c0:8002::154, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|2606:50c0:8001::154|:443... connected.
@@ -43,11 +43,11 @@ Saving to: ‘/home/bart/.local/bin/run-nbnl-env’
 
 2025-05-08 15:23:36 (33.1 MB/s) - ‘/home/bart/.local/bin/run-nbnl-env’ saved [631/631]
 
-$ ls -la .local/bin/run-nbnl-env
--rw-rw-r-- 1 bart bart 631 May  8 15:23 .local/bin/run-nbnl-env
-$ chmod +x /home/bart/.local/bin/run-nbnl-env
-$ ls -la .local/bin/run-nbnl-env
--rwxrwxr-x 1 bart bart 631 May  8 15:23 .local/bin/run-nbnl-env
+$ ls -la ~/.local/bin/run-nbnl-env
+-rw-rw-r-- 1 bart bart 963 May  8 20:40 /home/bart/.local/bin/run-nbnl-env
+$ chmod +x ~/.local/bin/run-nbnl-env
+$ ls -la ~/.local/bin/run-nbnl-env
+-rwxrwxr-x 1 bart bart 963 May  8 20:40 /home/bart/.local/bin/run-nbnl-env
 ```
 
 This would enable instantiating a Docker container by simply invoking: `run-nbnl-env`.
@@ -62,7 +62,7 @@ For example:
 $ run-nbnl-env
 ```
 
-Running the script without any arguments will assume the current working directory is the project directory, which it mounts to `/project`.
+Running the script without any arguments will assume the current working directory is the project directory, which it mounts under `/project`.
 
 If a directory path is passed as an argument, it is used as the project directory instead:
 
