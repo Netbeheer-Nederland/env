@@ -49,5 +49,5 @@ RUN npm i -g \
     @djencks/asciidoctor-mathjax@^0.0.9
 
 # Install shell completions for just
-RUN just --completions bash >> $HOME/.bash_completion \
-    && echo "source $HOME/.bash_completion" >> $HOME/.bashrc
+RUN just --completions bash >> /usr/share/bash-completion/completions/just \
+    && echo "source /usr/share/bash-completion/completions/just" >> /etc/bash.bashrc
