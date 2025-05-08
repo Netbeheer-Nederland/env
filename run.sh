@@ -5,8 +5,28 @@ LOCAL_PROJECT_DIR="${1:-.}"
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 USER_NAME="$USER"
-GIT_USER_NAME="$(git config --global user.name)"
-GIT_USER_EMAIL="$(git config --global user.email)"
+
+GIT_FOUND=$(command -v git)
+
+# Git user name
+if [ -z "$GIT_USER_NAME" ] && [ -n "$GIT_FOUND" ]; then
+    git_user_name="$(git config user.name)"
+    if [ -n "$git_user_name" ]; then
+        GIT_USER_NAME="$git_user_name"
+    else
+        echo "Git user name could not be set."; exit 1
+    fi
+fi
+
+# Git user e-mail
+if [ -z "$GIT_USER_EMAIL" ] && [ -n "$GIT_FOUND" ]; then
+    git_user_email="$(git config user.email)"
+    if [ -n "$git_user_email" ]; then
+        GIT_USER_EMAIL="$git_user_email"
+    else
+        echo "Git user e-mail could not be set."; exit 1
+    fi
+fi
 
 docker run \
     -it \

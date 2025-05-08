@@ -10,7 +10,7 @@ The `run.sh` script should be used to instantiate a container. It runs the conta
 * mounting the project working directory in the container in the `/project` directory
 * mount the host user's SSH key directory in the container
 * mapping the host user to the target container environment (UID, GID and name)
-* setting the Git user name and e-mail as globally (in the `--global` sense) configured in the host environment
+* setting the Git user name and e-mail as globally (in the `--global` sense) configured in the host environment, or through environment variables
 
 ## Installation
 
@@ -18,7 +18,6 @@ The only requirements for running this container are:
 
 * Docker (_required_)
 * Bash (_recommended_)
-* Git (for the user configuration)
 * SSH keys (_if applicable_)
 
 > [!note]
@@ -55,7 +54,7 @@ This would enable instantiating a Docker container by simply invoking: `run-nbnl
 
 ## Running
 
-Just run the runner script you installed earlier.
+Just run the runner script you installed earlier. If you have Git installed and set up in the host environment, the script will map your Git user to the one used in the container.
 
 For example:
 
@@ -70,6 +69,15 @@ If a directory path is passed as an argument, it is used as the project director
 ```sh
 $ run-nbnl-env ~/projects/my-data-product
 ```
+
+If you do not have Git set up, you must provide your user name and e-mail through environment variables:
+
+```sh
+$ GIT_USER_NAME="Your Name" GIT_USER_EMAIL="you@yourcompany.com" run-nbnl-env
+```
+
+> [!note]
+> Passing in these variables takes precedence over a found Git configuration on the host environment.
 
 ## Developing
 
