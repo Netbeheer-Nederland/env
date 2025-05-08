@@ -1,7 +1,7 @@
 #!/bin/env bash
 
 SCRIPT_DIR=$(dirname "$0")
-LOCAL_PROJECT_DIR=${1:-.}
+LOCAL_PROJECT_DIR="${1:-.}"
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 USER_NAME="$USER"
