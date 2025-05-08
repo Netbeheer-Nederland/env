@@ -81,6 +81,8 @@ $ GIT_USER_NAME="Your Name" GIT_USER_EMAIL="you@yourcompany.com" run-nbnl-env
 
 ## Developing
 
+The Docker image is published on Docker Hub [here](https://hub.docker.com/r/bartkl/nbnl-env/).
+
 ### Building
 
 Simply run the `build.sh` script:
