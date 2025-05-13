@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     git \
     nano \
+    bc \
     vim
 
 # Install Python project dependencies
