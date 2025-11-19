@@ -32,9 +32,10 @@ RUN uv export --format requirements.txt > requirements.txt \
     && uv pip install --system -r requirements.txt
 
 # Install Node.js
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash \
-    && source "$HOME/.nvm/nvm.sh" \
-    && nvm install 24
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -fsSL https://deb.nodesource.com/setup_24.x | bash - && \
+    apt-get install -y nodejs
 
 # Install Antora and its dependencies
 RUN npm i -g \
