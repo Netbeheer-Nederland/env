@@ -1,0 +1,27 @@
+site:
+  title: {{ site_title }}
+  url: {{ site_url }}
+content:
+  sources:
+    - url: ''
+      start_paths: [output/artifacts/documentation, output/artifacts/root_documentation]
+asciidoc:
+  attributes:
+    page-pagination: ''
+    experimental: ''
+    kroki-fetch-diagram: true  # Whether rendering is done server-sided so the images are served statically.
+    kroki-default-format: svg@
+    kroki-server-url: http://fruit.ritger.nl:9000
+  extensions:
+    - asciidoctor-kroki
+output:
+  clean: true
+  dir: docs
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: /antora/supplemental-ui
+antora:
+  extensions:
+  - '@antora/lunr-extension'
