@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@asciidoctor/reveal.js": "^5.2.0",
-    "@antora/collector-extension": "^1.0.2",
-    "asciidoctor": "^3.0.4"
-  }
-}

@@ -40,6 +40,7 @@ RUN npm i -g \
     @antora/cli@3.1.9 \
     @antora/lunr-extension@^1.0.0-alpha.8 \
     @antora/site-generator@3.1.9 \
+    @antora/collector-extension@^1.0.2 \
     @mermaid-js/mermaid-cli@^11.4.2 \
     asciidoctor-kroki@^0.18.1 \
     @asciidoctor/reveal.js@^5.2.0 \
