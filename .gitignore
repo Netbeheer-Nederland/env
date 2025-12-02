@@ -133,3 +133,6 @@ dmypy.json
 
 # Vim
 *.swp
+
+# Node modules
+/node_modules
