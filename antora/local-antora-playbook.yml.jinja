@@ -4,10 +4,10 @@ site:
 content:
   sources:
     - url: ''
-      start_paths: [output/artifacts/documentation, output/artifacts/root_documentation]
+      start_paths: [output/adoc]
     #- url: ''
     #  tags: [v*.*.*]
-    #  start_path: output/artifacts/documentation
+    #  start_path: output/adoc
 asciidoc:
   attributes:
     page-pagination: ''
@@ -19,7 +19,7 @@ asciidoc:
     - asciidoctor-kroki
 output:
   clean: true
-  dir: output/docs
+  dir: output/html
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
