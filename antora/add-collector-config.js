@@ -1,16 +1,31 @@
+const fs = require('fs')
+const path = require('path')
+const yaml = require('js-yaml')
+
+function readLinkMLSchema () {
+  const linkmlFilename = fs.readdirSync("./model").filter(f => f.endsWith('.linkml.yml'))[0]
+  const linkmlPath = path.join("./model", linkmlFilename)
+
+  let doc
+  try {
+    const fileContent = fs.readFileSync(linkmlPath, "utf8")
+    doc = yaml.load(fileContent) || {}
+  } catch (err) {
+    console.error(`Failed to read or parse YAML file: ${linkmlPath}`)
+    console.error(err)
+    process.exit(1)
+  }
+
+  return doc
+}
+
 module.exports.register = function () {
   this.once('contentAggregated', ({ contentAggregate, playbook }) => {
-    const outDir = "output/adoc"
+    const outDir = "./output/adoc"
 
     for (const { origins } of contentAggregate) {
       for (const origin of origins) {
-
-        /* TODO: Get these from the LinkML schema. */
-        const model = {
-            name: "capaciteitskaart",
-            title: "Capaciteitskaart",
-            version: origin.refname
-        }
+        let linkmlSchema = readLinkMLSchema()
 
         let collector = {
           run: {
@@ -18,15 +33,15 @@ module.exports.register = function () {
             env: [
               {
                 'name': 'NAME',
-                'value': model.name
+                'value': linkmlSchema.name
               },
               {
                 'name': 'TITLE',
-                'value': model.title
+                'value': linkmlSchema.title
               },
               {
                 'name': 'VERSION',
-                'value': model.version
+                'value': linkmlSchema.version
               }
             ]
           },

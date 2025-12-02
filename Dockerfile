@@ -44,7 +44,9 @@ RUN npm i -g \
     @mermaid-js/mermaid-cli@^11.4.2 \
     asciidoctor-kroki@^0.18.1 \
     @asciidoctor/reveal.js@^5.2.0 \
-    @djencks/asciidoctor-mathjax@^0.0.9
+    js-yaml@^4.1.1
+    #@djencks/asciidoctor-mathjax@^0.0.9
+
 
 # Copy Antora configuration files
 COPY antora ./antora
