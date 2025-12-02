@@ -6,6 +6,8 @@ function generate_documentation() {
     echo
     mkdir -p "output"
     cp -r "documentation" "output/adoc"
+    yq -i '.version = strenv(VERSION)' output/adoc/antora.yml
+    yq -i '.title = strenv(TITLE)' output/adoc/antora.yml
     echo
     echo "Generating schema documentation…"
     echo

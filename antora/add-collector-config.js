@@ -1,16 +1,16 @@
-const path = require('path')
-
-
 module.exports.register = function () {
   this.once('contentAggregated', ({ contentAggregate, playbook }) => {
     const outDir = "output/adoc"
-    const modelName = path.basename(process.cwd());
 
     for (const { origins } of contentAggregate) {
       for (const origin of origins) {
 
-        origin.descriptor.name = modelName;
-        origin.descriptor.title = modelName.toUpperCase();
+        /* TODO: Get these from the LinkML schema. */
+        const model = {
+            name: "capaciteitskaart",
+            title: "Capaciteitskaart",
+            version: origin.refname
+        }
 
         let collector = {
           run: {
@@ -18,7 +18,15 @@ module.exports.register = function () {
             env: [
               {
                 'name': 'NAME',
-                'value': origin.descriptor.name
+                'value': model.name
+              },
+              {
+                'name': 'TITLE',
+                'value': model.title
+              },
+              {
+                'name': 'VERSION',
+                'value': model.version
               }
             ]
           },
