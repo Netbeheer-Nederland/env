@@ -4,7 +4,9 @@ site:
 content:
   sources:
     - url: ''
-      start_paths: [output/artifacts/documentation, output/artifacts/root_documentation]
+      tags: '@({1..9})*({0..9}).+({0..9})'
+      branches: ~
+      start_path: documentation
 asciidoc:
   attributes:
     page-pagination: ''
@@ -16,7 +18,7 @@ asciidoc:
     - asciidoctor-kroki
 output:
   clean: true
-  dir: docs
+  dir: output/html
 ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
@@ -24,4 +26,7 @@ ui:
   supplemental_files: /antora/supplemental-ui
 antora:
   extensions:
-  - '@antora/lunr-extension'
+    - require: '/antora/add-collector-config.js'
+    - require: '@antora/collector-extension'
+      keep_worktrees: true
+    - require: '@antora/lunr-extension'

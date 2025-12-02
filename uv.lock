@@ -187,7 +187,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "check-jsonschema", specifier = ">=0.31.0,<0.32.0" },
-    { name = "gen-linkml-profile", git = "https://github.com/Netbeheer-Nederland/gen-linkml-profile.git" },
+    { name = "gen-linkml-profile", git = "https://github.com/Netbeheer-Nederland/gen-linkml-profile.git?rev=v0.22.0" },
     { name = "jinja-cli", specifier = ">=1.2.2,<2" },
     { name = "linkml", specifier = ">=1.8.4,<1.9" },
     { name = "linkml-asciidoc-generator", git = "https://github.com/Netbeheer-Nederland/linkml-asciidoc-generator.git?rev=v0.5.0" },
@@ -214,7 +214,7 @@ wheels = [
 [[package]]
 name = "gen-linkml-profile"
 version = "0.22.0"
-source = { git = "https://github.com/Netbeheer-Nederland/gen-linkml-profile.git#cb453c3f7ca1c69106715bf5eb25c04cd9a3c62e" }
+source = { git = "https://github.com/Netbeheer-Nederland/gen-linkml-profile.git?rev=v0.22.0#8833a317d9394973f14686e594fb39014c84a8b5" }
 dependencies = [
     { name = "click" },
     { name = "linkml" },
