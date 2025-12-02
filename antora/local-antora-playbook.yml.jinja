@@ -27,4 +27,7 @@ ui:
   supplemental_files: /antora/supplemental-ui
 antora:
   extensions:
-  - '@antora/lunr-extension'
+    - require: '/antora/add-collector-config.js'
+    - require: '@antora/collector-extension'
+      keep_worktrees: true
+    - require: '@antora/lunr-extension'
