@@ -1,48 +1,58 @@
 set shell := ["bash", "-uc"]
-ref_name := shell("git rev-parse --abbrev-ref HEAD")
 name := shell("grep -Po '(?<=name: ).*$' model/*.linkml.yml | tr -d '\n' | tr '-' '_'")
+site_title := shell("grep -Po '(?<=title: ).*$' model/*.linkml.yml | tr -d '\n'")
 
 _default:
     @just --list --unsorted --justfile {{justfile()}}
 
-# Generate documentation
+# Generate documentation (assumes generated artifacts)
 [group("generators")]
-generate-documentation: (clean "output")
+generate-documentation: (_clean "output")
     @echo "Generating documentation…"
-    @echo
-    @echo "Generating schema documentation…"
     @echo
     mkdir -p "output"
     cp -r "documentation" "output/adoc"
+    @echo
+    @echo "Generating schema documentation…"
+    @echo
     mkdir -p "output/adoc/modules/schema"
     python -m linkml_asciidoc_generator.main \
         "model/{{name}}.linkml.yml" \
         "output/adoc/modules/schema" \
         "--relations-diagrams"
-    echo -e "nav:\n- modules/schema/nav.adoc" >> output/adoc/antora.yml
-    @echo "… OK."
+    @echo "Adding schema documentation to nav…"
+    yq -i '.nav += ["modules/schema/nav.adoc"]' output/adoc/antora.yml
     @echo
-    @echo -e "Copying artifacts to documentation…"
+    @echo -e "Copying generated artifacts to schema documentation…"
     @for model in model/*; do \
         cp -r $model output/adoc/modules/schema/attachments/; \
-        echo -e "To reference use:\n\txref:schema:attachment$"${model#model/}; \
+        echo -e "To reference use:\n\txref:schema:attachment$"${model#model/}"[]"; \
+    done
+    @echo -e "Copy examples (JSON) to schema documentation…"
+    for example in examples/*.yml; do \
+        example_name=$(basename $example); \
+        gen-linkml-profile  \
+            convert \
+            "$example" \
+            --out "output/adoc/modules/schema/attachments/${example_name%.*}.json"; \
+        echo -e "To reference use:\n\txref:schema:attachment\$${example_name%.*}.json[]"; \
     done
     @echo
     @echo "Generating site using Antora…"
     @if [ ${IN_DEVCONTAINER} == "true"  ]; then \
-        jinja -D site_url http://localhost:8080 -D site_title 'Netbewust Laden' /antora/local-antora-playbook.yml.jinja > ~/local-antora-playbook.yml; \
-        antora ~/local-antora-playbook.yml; \
+        jinja -D site_url http://localhost:8080 -D site_title {{site_title}} /antora/local-antora-playbook.yml.jinja > /tmp/local-antora-playbook.yml; \
+        antora /tmp/local-antora-playbook.yml; \
     else \
-        jinja -D site_url http://modellen.netbeheernederland.nl -D site_title 'Netbewust Laden' /antora/antora-playbook.yml.jinja > ~/antora-playbook.yml; \
-        antora ~/antora-playbook.yml; \
+        jinja -D site_url http://modellen.netbeheernederland.nl -D site_title {{site_title}} /antora/antora-playbook.yml.jinja > /tmp/antora-playbook.yml; \
+        antora /tmp/antora-playbook.yml; \
     fi
     @echo
     @echo -e "Generated documentation files at: output/html"
     @echo
 
-# Clean up the output directory
+# Clean up the provided artifact directory
 [group("project")]
-clean path:
+_clean path:
     @echo "Cleaning up…"
     @echo
     @if [ -d {{path}} ]; then \
@@ -51,27 +61,9 @@ clean path:
     @echo "… OK."
     @echo
 
-# Generate example data
-[group("generators")]
-generate-example-data:
-    @echo "Generating JSON example data…"
-    @echo
-    mkdir -p "output/examples"
-    for example_file in examples/*.yml; do \
-        [ -f "$example_file" ] || continue; \
-        gen-linkml-profile  \
-            convert \
-            "$example_file" \
-            --out "output/${example_file%.*}.json"; \
-    done
-    @echo "… OK."
-    @echo
-    @echo -e "Generated example JSON data at: output/examples"
-    @echo
-
 # Generate JSON Schema
 [group("generators")]
-generate-json-schema: (clean "model/{{name}}.json_schema.json")
+generate-json-schema: (_clean "model/{{name}}.json_schema.json")
     @echo "Generating JSON Schema…"
     @echo
     gen-json-schema \
@@ -83,47 +75,63 @@ generate-json-schema: (clean "model/{{name}}.json_schema.json")
     @echo "Generated JSON Schema at: model/{{name}}.json_schema.json"
     @echo
 
-# Validate example data
-[group("validate")]
-validate-example-data: generate-json-schema generate-example-data
+# Validate example data (assumes generated JSON Schema)
+[group("project")]
+validate-example-data:
     @echo "Validating example data against JSON schema…"
     @echo
-    for example_file in output/examples/*.json; do \
-        [ -f "$example_file" ] || continue; \
-        check-jsonschema --schemafile "model/{{name}}.json_schema.json" $example_file; \
+    mkdir -p /tmp/{{name}}/examples
+    for example in examples/*.yml; do \
+        example_json=/tmp/{{name}}/${example%.*}.json; \
+        gen-linkml-profile  \
+            convert \
+            "$example" \
+            --out $example_json; \
+        check-jsonschema --schemafile "model/{{name}}.json_schema.json" $example_json; \
     done
     @echo "… OK."
     @echo
 
+# Serve the generated website
 [group("project")]
 serve:
     http-serve output/html
 
-# Preview version
-[group("version-control")]
-preview-version:
-    @echo "Generating preview of version…"
-    @echo
-    gh workflow run preview_release.yml --ref {{ref_name}}
-    @echo "… OK."
-    @echo
-
 # Release new major version
 [group("version-control")]
-release-major-version:
-    @echo "Releasing new major version…"
-    @echo
-    just build
-    git add && git commit
-    git tag v1.0
-    @echo "… OK."
-    @echo
+release-major-version: #generate-documentation validate-example-data
+    #!/bin/env bash
+    git fetch && git fetch --tags
+
+    latest_major=$(git tag -l | grep -P '^\d+\.\d+$' | cut -d . -f 1 | sort -n | tail -1)
+    if [ -z "$latest_major" ]; then
+        git tag 1.0;
+    else
+        git tag $(echo $latest_major + 1 | bc).0;
+    fi
+
+    git push --tags
+
+    echo "… OK."
+    echo
 
 # Release new minor version
 [group("version-control")]
 release-minor-version:
-    @echo "Releasing new minor version…"
-    @echo
-    gh workflow run release_minor_version.yml --ref {{ref_name}}
-    @echo "… OK."
-    @echo
+    #!/bin/env bash
+    git fetch && git fetch --tags
+
+    latest_version=$(git tag -l | grep -P '^\d+\.\d+$' | sort -t . -k 1,1n -k 2,2n | tail -1)
+    if [ -z "$latest_version" ]; then
+        git tag 1.0;
+    else
+        latest_major=$(echo $latest_version | cut -d . -f 1);
+        latest_minor=$(echo $latest_version | cut -d . -f 2);
+        new_minor=$(echo $latest_minor + 1 | bc);
+        git tag $latest_major.$new_minor;
+    fi
+
+    git push --tags
+
+    echo "… OK."
+    echo

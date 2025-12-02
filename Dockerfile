@@ -72,5 +72,9 @@ LABEL org.opencontainers.image.source=https://github.com/netbeheer-nederland/env
 LABEL org.opencontainers.image.description="Netbeheer Nederland environment for data modeling and generating documentation and schemas."
 LABEL org.opencontainers.image.licenses=Apache-2.0
 
+# Mike Farah's yq
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq \
+    && chmod +x /usr/local/bin/yq
+
 # Make just make the invocation directory as its working directory.
 RUN echo "alias just='just -d . '" >> /etc/bash.bashrc
