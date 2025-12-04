@@ -4,24 +4,24 @@
 function generate_documentation() {
     echo "Generating documentation…"
     echo
-    mkdir -p "output"
-    cp -r "documentation" "output/adoc"
-    yq -i '.version = strenv(VERSION)' output/adoc/antora.yml
-    yq -i '.title = strenv(TITLE)' output/adoc/antora.yml
+    mkdir -p $OUTDIR
+    cp -r documentation/* $OUTDIR
+    yq -i '.version = strenv(VERSION)' $OUTDIR/antora.yml
+    yq -i '.title = strenv(TITLE)' $OUTDIR/antora.yml
     echo
     echo "Generating schema documentation…"
     echo
-    mkdir -p "output/adoc/modules/schema"
+    mkdir -p "$OUTDIR/modules/schema"
     python -m linkml_asciidoc_generator.main \
         "model/$NAME.linkml.yml" \
-        "output/adoc/modules/schema" \
+        "$OUTDIR/modules/schema" \
         "--relations-diagrams"
     echo "Adding schema documentation to nav…"
-    yq -i '.nav += ["modules/schema/nav.adoc"]' output/adoc/antora.yml
+    yq -i '.nav += ["modules/schema/nav.adoc"]' $OUTDIR/antora.yml
     echo
     echo -e "Copying generated artifacts to schema documentation…"
     for model in model/*; do \
-        cp -r $model output/adoc/modules/schema/attachments/; \
+        cp -r $model $OUTDIR/modules/schema/attachments/; \
         echo -e "To reference use:\n\txref:schema:attachment$"${model#model/}"[]"; \
     done
     echo -e "Copy examples (JSON) to schema documentation…"
@@ -30,7 +30,7 @@ function generate_documentation() {
         gen-linkml-profile  \
             convert \
             "$example" \
-            --out "output/adoc/modules/schema/attachments/${example_name%.*}.json"; \
+            --out "$OUTDIR/modules/schema/attachments/${example_name%.*}.json"; \
         echo -e "To reference use:\n\txref:schema:attachment\$${example_name%.*}.json[]"; \
     done
     echo

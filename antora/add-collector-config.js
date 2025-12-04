@@ -21,7 +21,7 @@ function readLinkMLSchema () {
 
 module.exports.register = function () {
   this.once('contentAggregated', ({ contentAggregate, playbook }) => {
-    const outDir = "./output/adoc"
+    const outDir = path.resolve("./output/adoc")  // Relative path gave (silent) issues with `scan` step.
 
     for (const { origins } of contentAggregate) {
       for (const origin of origins) {
@@ -42,12 +42,16 @@ module.exports.register = function () {
               {
                 'name': 'VERSION',
                 'value': linkmlSchema.version
+              },
+              {
+                'name': 'OUTDIR',
+                'value': outDir
               }
             ]
           },
           scan: {
             clean: true,
-            dir: outDir
+            dir: outDir,
           }
         }
 
