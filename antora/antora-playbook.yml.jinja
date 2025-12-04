@@ -1,6 +1,7 @@
 site:
   title: {{ site_title }}
   url: {{ site_url }}
+  start_page: ROOT::index.adoc
 content:
   sources:
     - url: ''
@@ -28,5 +29,4 @@ antora:
   extensions:
     - require: '/antora/add-collector-config.js'
     - require: '@antora/collector-extension'
-      keep_worktrees: true
     - require: '@antora/lunr-extension'

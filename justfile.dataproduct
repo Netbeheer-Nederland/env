@@ -8,8 +8,6 @@ _default:
 # Generate documentation (assumes generated artifacts)
 [group("generators")]
 generate-documentation: (_clean "output")
-    @echo "Generating documentation…"
-    @echo
     @echo "Generating site using Antora…"
     @if [ ${IN_DEVCONTAINER} == "true"  ]; then \
         jinja -D site_url http://localhost:8080 -D site_title {{site_title}} /antora/local-antora-playbook.yml.jinja > /tmp/local-antora-playbook.yml; \
