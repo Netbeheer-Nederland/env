@@ -1,13 +1,16 @@
 #!/bin/env bash
 
+export name=$(grep -sPo '(?<=name: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
+export title=$(grep -sPo '(?<=title: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
+export version=$(grep -sPo '(?<=version: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
 
 function generate_documentation() {
     echo "Generating documentation…"
     echo
     mkdir -p $OUTDIR
     cp -r documentation/* $OUTDIR
-    yq -i '.version = strenv(VERSION)' $OUTDIR/antora.yml
-    yq -i '.title = strenv(TITLE)' $OUTDIR/antora.yml
+    yq -i '.version = env(version)' $OUTDIR/antora.yml
+    yq -i '.title = env(title)' $OUTDIR/antora.yml
     echo
     echo "Generating schema documentation…"
     echo
@@ -16,7 +19,7 @@ function generate_documentation() {
         -o $OUTDIR/modules/schema \
         -t /opt/data-products/templates \
         --render-diagrams \
-        model/$NAME.linkml.yml
+        model/$name.linkml.yml
     echo "Adding schema documentation to nav…"
     yq -i '.nav += ["modules/schema/nav.adoc"]' $OUTDIR/antora.yml
     echo
