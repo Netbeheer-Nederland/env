@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
-name := shell("grep -Po '(?<=name: ).*$' model/*.linkml.yml | tr -d '\n' | tr '-' '_'")
-site_title := shell("grep -Po '(?<=title: ).*$' model/*.linkml.yml | tr -d '\n'")
+name := shell("grep -sPo '(?<=name: ).*$' model/*.linkml.yml | tr -d '\n' | tr '-' '_'")
+site_title := shell("grep -sPo '(?<=title: ).*$' model/*.linkml.yml | tr -d '\n'")
 
 _default:
     @just --list --unsorted --justfile {{justfile()}}
@@ -105,3 +105,8 @@ release-minor-version:
 
     echo "… OK."
     echo
+
+# Initialize new data product
+[group("project")]
+new:
+    echo TODO.
