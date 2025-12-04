@@ -22,9 +22,9 @@ ui:
   bundle:
     url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
     snapshot: true
-  supplemental_files: /antora/supplemental-ui
+  supplemental_files: /opt/data-products/antora/supplemental-ui
 antora:
   extensions:
-    - require: '/antora/add-collector-config.js'
+    - require: '/opt/data-products/antora/add-collector-config.js'
     - require: '@antora/collector-extension'
     - require: '@antora/lunr-extension'

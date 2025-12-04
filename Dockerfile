@@ -48,8 +48,8 @@ RUN npm i -g \
     #@djencks/asciidoctor-mathjax@^0.0.9
 
 
-# Copy Antora configuration files
-COPY antora ./antora
+# Copy configuration files
+COPY data-products /opt/data-products
 
 # Install just
 RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin --tag 1.38.0
@@ -57,9 +57,6 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash 
 # Install shell completions for just
 RUN just --completions bash >> /usr/share/bash-completion/completions/just \
     && echo 'source /usr/share/bash-completion/completions/just' >> /etc/bash.bashrc
-
-# Copy justfiles into container
-COPY justfile.dataproduct ./
 
 # GitHub client
 RUN (type -p wget >/dev/null || (apt update && apt-get install wget -y)) \
@@ -79,5 +76,5 @@ LABEL org.opencontainers.image.licenses=Apache-2.0
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq \
     && chmod +x /usr/local/bin/yq
 
-# Make just make the invocation directory as its working directory.
+# Invocation directory is working directory for just
 RUN echo "alias just='just -d . '" >> /etc/bash.bashrc

@@ -13,9 +13,10 @@ function generate_documentation() {
     echo
     mkdir -p "$OUTDIR/modules/schema"
     python -m linkml_asciidoc_generator.main \
-        "model/$NAME.linkml.yml" \
-        "$OUTDIR/modules/schema" \
-        "--relations-diagrams"
+        -o $OUTDIR/modules/schema \
+        -t /opt/data-products/templates \
+        --render-diagrams \
+        model/$NAME.linkml.yml
     echo "Adding schema documentation to nav…"
     yq -i '.nav += ["modules/schema/nav.adoc"]' $OUTDIR/antora.yml
     echo

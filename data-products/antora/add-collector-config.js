@@ -29,7 +29,7 @@ module.exports.register = function () {
 
         let collector = {
           run: {
-            command: `/antora/generate-documentation.sh`,
+            command: `/opt/data-products/generate-documentation.sh`,
             env: [
               {
                 'name': 'NAME',

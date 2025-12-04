@@ -190,7 +190,7 @@ requires-dist = [
     { name = "gen-linkml-profile", git = "https://github.com/Netbeheer-Nederland/gen-linkml-profile.git?rev=v0.22.0" },
     { name = "jinja-cli", specifier = ">=1.2.2,<2" },
     { name = "linkml", specifier = ">=1.8.4,<1.9" },
-    { name = "linkml-asciidoc-generator", git = "https://github.com/Netbeheer-Nederland/linkml-asciidoc-generator.git?rev=v0.5.0" },
+    { name = "linkml-asciidoc-generator", git = "https://github.com/Netbeheer-Nederland/linkml-asciidoc-generator.git?rev=v0.6.0-alpha2" },
 ]
 
 [[package]]
@@ -485,7 +485,7 @@ wheels = [
 [[package]]
 name = "linkml-asciidoc-generator"
 version = "0.5.0"
-source = { git = "https://github.com/Netbeheer-Nederland/linkml-asciidoc-generator.git?rev=v0.5.0#1cae733495b27c44ce49090a64290c8b98059afd" }
+source = { git = "https://github.com/Netbeheer-Nederland/linkml-asciidoc-generator.git?rev=v0.6.0-alpha2#ec5c85b480da14d7ca22a988f6fce74191e5e54f" }
 dependencies = [
     { name = "jinja2" },
     { name = "pydantic" },
