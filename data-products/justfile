@@ -1,9 +1,14 @@
 set shell := ["bash", "-uc"]
-name := shell("grep -sPo '(?<=name: ).*$' model/*.linkml.yml | tr -d '\n' | tr '-' '_'")
-site_title := shell("grep -sPo '(?<=title: ).*$' model/*.linkml.yml | tr -d '\n'")
+name := shell("yq -0 .name model/*.linkml.yml | tr '-' '_'")
+site_title := shell("yq -0 .title model/*.linkml.yml")
 
 _default:
     @just --list --unsorted --justfile {{justfile()}}
+
+
+# Build
+build: (_clean "output")
+    yq model/*.linkml.yml
 
 # Generate documentation (assumes generated artifacts)
 [group("generators")]
@@ -104,6 +109,27 @@ release-minor-version:
     git push --tags
 
     echo "… OK."
+    echo
+
+# Increment major version
+[group("project")]
+increment-major-version:
+    #!/bin/env bash
+    git fetch && git fetch --tags
+
+    latest_major=$(git tag -l | grep -P '^\d+\.\d+$' | cut -d . -f 1 | sort -n | tail -1)
+    if [ -z "$latest_major" ]; then
+        new_major=1.0;
+    else
+        new_major=$(echo $latest_major + 1 | bc).0;
+    fi
+
+    echo "New major version is: $new_major"
+    echo
+    echo "Writing new major version to LinkML schema…"
+    yq -i '.version = env(version)' $OUTDIR/antora.yml
+
+    echo "OK."
     echo
 
 # Initialize new data product

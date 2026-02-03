@@ -1,8 +1,8 @@
-#!/bin/env bash
+#!/bin/env bas
 
-export name=$(grep -sPo '(?<=name: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
-export title=$(grep -sPo '(?<=title: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
-export version=$(grep -sPo '(?<=version: ).*$' ./model/*.linkml.yml | tr -d '\n' | tr '-' '_')
+export name=$(yq -0 .name ./model/*.linkml.yml | tr '-' '_')
+export title=$(yq -0 .title ./model/*.linkml.yml)
+export version=$(yq -0 .version ./model/*.linkml.yml)
 
 function generate_documentation() {
     echo "Generating documentation…"
