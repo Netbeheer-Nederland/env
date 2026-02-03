@@ -1,4 +1,4 @@
-#!/bin/env bas
+#!/bin/env bash
 
 export name=$(yq -0 .name ./model/*.linkml.yml | tr '-' '_')
 export title=$(yq -0 .title ./model/*.linkml.yml)
